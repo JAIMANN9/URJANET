@@ -19,8 +19,12 @@ export default function RegisterPage() {
   const [loading, setLoading] = useState(false);
   const router = useRouter();
 
-  function next() { setStep((s) => Math.min(4, (s + 1) as Step)); }
-  function back() { setStep((s) => Math.max(1, (s - 1) as Step)); }
+  function next() {
+    setStep((s) => Math.min(4, (s as number) + 1) as Step);
+  }
+  function back() {
+    setStep((s) => Math.max(1, (s as number) - 1) as Step);
+  }
 
   async function submit() {
     setLoading(true);
