@@ -1,26 +1,121 @@
 @import "tailwindcss";
 
+/*
+  EcoGrid Pro Design System Tokens
+  Palette:
+  Primary: #10B981 (Emerald)
+  Secondary: #3B82F6 (Blue)
+  Accent: #F59E0B (Amber)
+  Dark: #1F2937 (Gray-800)
+  Light: #F9FAFB (Gray-50)
+  Success: #059669, Warning: #D97706, Error: #DC2626
+  Text Primary: #111827, Text Secondary: #6B7280
+*/
+
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  /* Base surface tokens */
+  --background: #F9FFF9; /* soft green-tinted white */
+  --foreground: #0f172a;
+
+  /* Brand tokens */
+  --ecg-primary: #10B981; /* emerald */
+  --ecg-secondary: #3B82F6; /* blue */
+  --ecg-accent: #F59E0B; /* amber */
+  --ecg-dark: #1F2937; /* gray-800 */
+  --ecg-light: #F9FAFB; /* gray-50 */
+
+  /* Status tokens */
+  --ecg-success: #059669;
+  --ecg-warning: #D97706;
+  --ecg-error: #DC2626;
+
+  /* Typography tokens */
+  --ecg-text: #111827;
+  --ecg-text-secondary: #6B7280;
+
+  /* Effects */
+  --ecg-ring: color-mix(in oklab, var(--ecg-primary) 55%, white);
+  --ecg-shadow: 0 10px 25px -10px color-mix(in oklab, #000 15%, transparent);
+  --ecg-glass-bg: color-mix(in oklab, #ffffff 70%, transparent);
+  --ecg-glass-border: color-mix(in oklab, #ffffff 80%, transparent);
+}
+
+/* Dark mode overrides (supports both prefers and class-based) */
+.dark :root, :root.dark {
+  --background: #0B1220;
+  --foreground: #E5E7EB;
+  --ecg-light: #0B1220;
 }
 
 @theme inline {
+  /* Map tokens to Tailwind Design Tokens */
   --color-background: var(--background);
   --color-foreground: var(--foreground);
+  --color-primary: var(--ecg-primary);
+  --color-secondary: var(--ecg-secondary);
+  --color-accent: var(--ecg-accent);
+  --color-dark: var(--ecg-dark);
+  --color-light: var(--ecg-light);
+  --color-success: var(--ecg-success);
+  --color-warning: var(--ecg-warning);
+  --color-error: var(--ecg-error);
+  --color-text: var(--ecg-text);
+  --color-text-secondary: var(--ecg-text-secondary);
+
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+/* Base element styles */
+html {
+  -webkit-tap-highlight-color: transparent;
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-geist-sans), ui-sans-serif, system-ui, -apple-system,
+    Segoe UI, Roboto, Ubuntu, Cantarell, Noto Sans, Helvetica Neue, Arial,
+    "Apple Color Emoji", "Segoe UI Emoji";
+}
+
+/* Focus styles for accessibility */
+:where(a, button, input, select, textarea, [tabindex]:not([tabindex="-1"])):focus-visible {
+  outline: 2px solid var(--ecg-primary);
+  outline-offset: 2px;
+}
+
+/* Utility: glass morphism card */
+.glass {
+  background: var(--ecg-glass-bg);
+  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(12px);
+  border: 1px solid var(--ecg-glass-border);
+  box-shadow: var(--ecg-shadow);
+  border-radius: var(--radius-lg);
+}
+
+/* Utility: elevated card */
+.elevated {
+  box-shadow: 0 8px 24px -12px rgba(0,0,0,0.35);
+}
+
+/* Smooth transitions */
+* {
+  transition-property: color, background-color, border-color, fill, stroke,
+    box-shadow, transform, opacity;
+  transition-duration: 150ms;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* High contrast helper */
+@media (forced-colors: active) {
+  .glass {
+    background: Canvas;
+    border-color: CanvasText;
+  }
 }
