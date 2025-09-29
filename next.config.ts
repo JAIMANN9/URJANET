@@ -1,4 +1,5 @@
 import type { NextConfig } from "next";
+// next-pwa types are shimmed via src/types/next-pwa.d.ts for environments without @types
 import nextPWA from "next-pwa";
 
 const withPWA = nextPWA({
