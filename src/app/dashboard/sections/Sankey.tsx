@@ -2,6 +2,7 @@
 import { sankey as d3sankey, sankeyLinkHorizontal, SankeyGraph } from "d3-sankey";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useLiveStore } from "@/store/live";
+import type { Latest as LiveLatest } from "@/store/live";
 
 export default function Sankey() {
   const { latest } = useLiveStore();
@@ -71,7 +72,7 @@ export default function Sankey() {
 type SNode = { name: string; x0?: number; x1?: number; y0?: number; y1?: number };
 type SLink = { source: number | SNode; target: number | SNode; value: number; width?: number };
 
-function buildGraph(latest: ReturnType<typeof useLiveStore>["latest"]) {
+function buildGraph(latest: LiveLatest) {
   const nodes = ["Solar", "Wind", "Battery", "Grid", "Load"].map((name) => ({ name }));
   const index = (name: string) => nodes.findIndex((n) => n.name === name);
   const links = [

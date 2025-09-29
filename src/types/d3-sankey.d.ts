@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 declare module "d3-sankey" {
   export interface SankeyNode<N = unknown, L = unknown> {
     name?: string;

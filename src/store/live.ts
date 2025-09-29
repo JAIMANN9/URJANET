@@ -8,7 +8,7 @@ type Series = {
   batteryKW: number[];
 };
 
-type Latest = {
+export type Latest = {
   totalEnergyKWh: number;
   currentPowerKW: number;
   costSavingsINR: number;
