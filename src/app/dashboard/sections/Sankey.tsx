@@ -25,33 +25,36 @@ export default function Sankey() {
     const svg = ref.current;
     while (svg.firstChild) svg.removeChild(svg.firstChild);
 
-    const sankey = d3sankey().nodeWidth(14).nodePadding(12).extent([[1, 1], [size.w - 1, size.h - 1]]);
-    const graph = sankey<SNode, SLink>(data as unknown as SankeyGraph<SNode, SLink>);
+    const sankey = d3sankey<SNode, SLink>().nodeWidth(14).nodePadding(12).extent([[1, 1], [size.w - 1, size.h - 1]]);
+    const graph: SankeyGraph<SNode, SLink> = sankey(data as SankeyGraph<SNode, SLink>);
 
     const g = svg.appendChild(document.createElementNS("http://www.w3.org/2000/svg", "g"));
 
     // Links
     const linkGroup = document.createElementNS("http://www.w3.org/2000/svg", "g");
-    (graph.links as any).forEach((l: any) => {
-      const path = sankeyLinkHorizontal()(l) as string;
+    const linkPath = sankeyLinkHorizontal<SNode, SLink>();
+    graph.links.forEach((l) => {
+      const path = String(linkPath(l));
       const el = document.createElementNS("http://www.w3.org/2000/svg", "path");
       el.setAttribute("d", path);
-      el.setAttribute("stroke", colorFor(l.source.name));
+      const src = typeof l.source === "number" ? (graph.nodes[l.source] as SNode) : (l.source as SNode);
+      el.setAttribute("stroke", colorFor(src.name));
       el.setAttribute("stroke-opacity", "0.5");
       el.setAttribute("fill", "none");
-      el.setAttribute("stroke-width", String(Math.max(1, l.width)));
+      const width = (l as SLink).width ?? 1;
+      el.setAttribute("stroke-width", String(Math.max(1, width)));
       linkGroup.appendChild(el);
     });
     g.appendChild(linkGroup);
 
     // Nodes
     const nodeGroup = document.createElementNS("http://www.w3.org/2000/svg", "g");
-    (graph.nodes as any).forEach((n: any) => {
+    graph.nodes.forEach((n) => {
       const rect = document.createElementNS("http://www.w3.org/2000/svg", "rect");
-      rect.setAttribute("x", n.x0);
-      rect.setAttribute("y", n.y0);
-      rect.setAttribute("width", String(n.x1 - n.x0));
-      rect.setAttribute("height", String(Math.max(1, n.y1 - n.y0)));
+      rect.setAttribute("x", String(n.x0 ?? 0));
+      rect.setAttribute("y", String(n.y0 ?? 0));
+      rect.setAttribute("width", String((n.x1 ?? 0) - (n.x0 ?? 0)));
+      rect.setAttribute("height", String(Math.max(1, (n.y1 ?? 0) - (n.y0 ?? 0))));
       rect.setAttribute("fill", colorFor(n.name));
       rect.setAttribute("rx", "3");
       nodeGroup.appendChild(rect);
@@ -64,8 +67,8 @@ export default function Sankey() {
   );
 }
 
-type SNode = { name: string };
-type SLink = { source: any; target: any; value: number };
+type SNode = { name: string; x0?: number; x1?: number; y0?: number; y1?: number };
+type SLink = { source: number | SNode; target: number | SNode; value: number; width?: number };
 
 function buildGraph(latest: ReturnType<typeof useLiveStore>["latest"]) {
   const nodes = ["Solar", "Wind", "Battery", "Grid", "Load"].map((name) => ({ name }));

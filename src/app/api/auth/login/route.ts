@@ -15,7 +15,7 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "Invalid credentials" }, { status: 400 });
   }
 
-  const { email, password, remember } = parsed.data;
+  const { email, remember } = parsed.data;
   // Demo: accept any password; choose role by email suffix for realism
   const role: JwtPayload["role"] = email.endsWith("@admin")
     ? "admin"

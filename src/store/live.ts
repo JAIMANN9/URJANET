@@ -26,7 +26,7 @@ type LiveState = {
   connect: () => void;
 };
 
-export const useLiveStore = create<LiveState>((set, get) => ({
+export const useLiveStore = create<LiveState>((set) => ({
   series: { timestamps: [], solarKW: [], windKW: [], batteryKW: [] },
   latest: {
     totalEnergyKWh: 18000,

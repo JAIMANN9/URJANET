@@ -1,6 +1,4 @@
-import { NextRequest } from "next/server";
-
-export async function GET(_req: NextRequest) {
+export async function GET() {
   // Demo equipment API status
   return Response.json({
     solar: { arraysOnline: 12, maintenance: 0 },

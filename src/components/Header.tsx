@@ -46,7 +46,7 @@ function ThemeToggle() {
     <button
       aria-label="Toggle theme"
       className="inline-flex h-9 w-9 items-center justify-center rounded-md border border-black/10 dark:border-white/15 hover:bg-black/[.04] dark:hover:bg-white/[.06]"
-      onClick={() => setTheme((theme === "dark" ? "light" : "dark") as any)}
+      onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
     >
       <SunIcon className="hidden dark:block h-5 w-5" />
       <MoonIcon className="dark:hidden h-5 w-5" />

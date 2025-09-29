@@ -1,6 +1,4 @@
-import { NextRequest } from "next/server";
-
-export async function GET(_req: NextRequest) {
+export async function GET() {
   // Demo weather API response
   return Response.json({
     location: { city: "Kota", region: "Rajasthan" },
