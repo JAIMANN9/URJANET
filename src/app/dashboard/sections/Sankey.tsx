@@ -55,7 +55,8 @@ export default function Sankey() {
       rect.setAttribute("y", String(n.y0 ?? 0));
       rect.setAttribute("width", String((n.x1 ?? 0) - (n.x0 ?? 0)));
       rect.setAttribute("height", String(Math.max(1, (n.y1 ?? 0) - (n.y0 ?? 0))));
-      rect.setAttribute("fill", colorFor(n.name));
+      // Ensure a definite string is passed for the fill color
+      rect.setAttribute("fill", colorFor(n.name ?? "Unknown"));
       rect.setAttribute("rx", "3");
       nodeGroup.appendChild(rect);
     });
